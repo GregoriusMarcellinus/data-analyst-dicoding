@@ -26,11 +26,14 @@ st.markdown("""
 ### Tentang Saya
 - **Nama**: Gregorius Marcellinus Ongkosianbhadra
 - **Alamat Email**: marcellongkosianbhadra@gmail.com
-- **ID Dicoding**: gregorius1414
+- **ID Dicoding**: gregorius1414""")
 
 ### Gambaran Proyek
-Dashboard ini menyajikan analisis data kualitas udara, terutama berfokus pada level PM2.5, dari stasiun Guanyuan. Proyek ini bertujuan untuk mengungkap tren, variasi musiman, dan dampak berbagai kondisi cuaca terhadap kualitas udara. Wawasan dari analisis ini dapat bermanfaat untuk studi lingkungan dan pemantauan kesehatan masyarakat.
-""")
+html_gambaran_proyek = """<div style="text-align: justify;"> <h3>Gambaran Proyek</h3>
+Proyek ini bertujuan untuk menganalisis data kualitas udara dari Stasiun Guanyuan guna mengidentifikasi tren musiman dan tahunan serta memahami hubungan antara level PM2.5 dan kondisi cuaca. Melalui visualisasi data, analisis korelasi, dan dekomposisi deret waktu, proyek ini mengungkap pola dan faktor-faktor yang mempengaruhi kualitas udara. Hasilnya menunjukkan bahwa kualitas udara di Guanyuan tidak memenuhi standar kesehatan WHO, dengan level PM2.5 melebihi batas tahunan dan harian yang direkomendasikan. Proyek ini memberikan wawasan untuk implementasi kebijakan pengurangan emisi, pemantauan berkelanjutan, dan peningkatan kesadaran masyarakat untuk memperbaiki kualitas udara dan kesehatan publik.
+</div>
+"""
+st.markdown(html_gambaran_proyek, unsafe_allow_html=True)
 
 # Sidebar untuk input pengguna
 st.sidebar.header('Fitur Filter Pengguna')
@@ -111,30 +114,24 @@ except ValueError as e:
     st.error("Tidak dapat melakukan dekomposisi deret waktu: " + str(e))
 
 # Kesimpulan
-st.subheader('Kesimpulan')
 st.write("""
-### 1. **Bagaimana kualitas udara saat ini dibandingkan dengan standar kualitas udara yang ditetapkan oleh pemerintah, dan apakah terdapat tren musiman dalam data kualitas udara yang menunjukkan perubahan signifikan dalam periode tertentu?**
+### Pertanyaan Bisnis
+1. **Bagaimana tren musiman dan tahunan dari level PM2.5 di Stasiun Guanyuan?**
+   - Dari grafik rata-rata level PM2.5 bulanan dan dekomposisi deret waktu, kita dapat mengidentifikasi pola musiman dan tahunan dalam konsentrasi PM2.5. Apakah terdapat bulan-bulan tertentu dengan level PM2.5 yang lebih tinggi atau lebih rendah secara konsisten?
 
-**Kesimpulan:**
-- **Kualitas Udara dan Standar Regulasi:** Untuk menentukan seberapa baik kualitas udara saat ini dibandingkan dengan standar regulasi, Anda perlu membandingkan nilai PM2.5 yang terukur dengan batas ambang batas yang ditetapkan oleh otoritas lingkungan. Jika nilai PM2.5 melebihi batas yang ditetapkan secara konsisten, itu menunjukkan bahwa kualitas udara mungkin tidak memenuhi standar.
-  
-- **Tren Musiman:** Analisis tren musiman menunjukkan rata-rata PM2.5 per bulan. Dengan melihat grafik bar yang menunjukkan tren musiman, Anda dapat mengidentifikasi bulan-bulan di mana kualitas udara cenderung lebih buruk atau lebih baik. Misalnya, peningkatan PM2.5 di bulan-bulan tertentu dapat menunjukkan pola musiman yang mempengaruhi kualitas udara, seperti pembakaran bahan bakar yang lebih tinggi selama musim dingin atau peningkatan aktivitas industri.
+2. **Bagaimana hubungan antara kondisi cuaca dan level PM2.5 di Stasiun Guanyuan?**
+   - Dengan menggunakan heatmap korelasi, kita dapat menganalisis hubungan antara indikator kualitas udara (seperti PM2.5) dan berbagai kondisi cuaca (seperti suhu, tekanan, dan kelembapan). Apakah terdapat korelasi signifikan yang dapat membantu memprediksi level PM2.5 berdasarkan kondisi cuaca tertentu?
 
-### 2. **Apa dampak dari aktivitas industri utama di wilayah ini terhadap kualitas udara, dan apakah terdapat pola hubungan antara jenis industri tertentu dan tingkat polusi udara yang terukur?**
+### Kesimpulan dari Visualisasi Data
 
-**Kesimpulan:**
-- **Dampak Aktivitas Industri:** Untuk mengevaluasi dampak aktivitas industri terhadap kualitas udara, analisis korelasi antara PM2.5 dan berbagai variabel industri seperti emisi atau jumlah aktivitas industri diperlukan. Dengan memeriksa data, Anda dapat menentukan apakah ada hubungan signifikan antara jenis industri tertentu dan tingkat polusi udara. 
+1. **Tren Musiman dan Tahunan:**
+   - Dari analisis tren musiman, kita melihat bahwa rata-rata level PM2.5 bervariasi sepanjang tahun dengan beberapa bulan menunjukkan level yang lebih tinggi. Grafik batang rata-rata level PM2.5 bulanan menunjukkan adanya puncak pada bulan tertentu yang mungkin terkait dengan perubahan musim atau kegiatan manusia.
+   - Dekomposisi deret waktu menunjukkan komponen musiman yang berulang setiap tahun serta tren jangka panjang dari level PM2.5. Komponen musiman mengindikasikan fluktuasi periodik yang konsisten, sementara komponen tren memberikan gambaran mengenai arah jangka panjang dari perubahan level PM2.5.
 
-- **Korelasi dengan Kondisi Cuaca:** Korelasi antara PM2.5 dan variabel cuaca seperti suhu, tekanan, kelembapan, dan curah hujan memberikan wawasan tambahan tentang faktor-faktor yang mempengaruhi kualitas udara. Korelasi yang kuat antara PM2.5 dan variabel cuaca tertentu dapat menunjukkan bahwa perubahan kondisi cuaca berkontribusi pada fluktuasi dalam tingkat polusi udara.
+2. **Hubungan antara Kondisi Cuaca dan Level PM2.5:**
+   - Heatmap korelasi menunjukkan adanya hubungan antara PM2.5 dengan indikator kualitas udara lainnya serta kondisi cuaca seperti suhu, tekanan, dan kelembapan. Misalnya, mungkin terdapat korelasi negatif antara PM2.5 dan suhu, yang menunjukkan bahwa level PM2.5 cenderung lebih rendah pada suhu yang lebih tinggi.
+   - Korelasi ini memberikan wawasan penting mengenai faktor-faktor cuaca yang mungkin mempengaruhi kualitas udara, dan dapat digunakan untuk model prediksi serta kebijakan pengendalian kualitas udara.
 
-**Rekomendasi untuk Tindakan Selanjutnya:**
-- **Penyesuaian Regulasi:** Jika kualitas udara sering melebihi standar, pertimbangkan untuk merekomendasikan penyesuaian regulasi atau kebijakan mitigasi untuk mengurangi emisi dari sumber-sumber utama.
-  
-- **Strategi Musiman:** Implementasikan strategi pengendalian polusi yang mempertimbangkan pola musiman, seperti pengurangan emisi selama bulan-bulan dengan kualitas udara yang lebih buruk.
-
-- **Pengelolaan Aktivitas Industri:** Identifikasi dan tangani sumber industri yang memberikan dampak terbesar pada kualitas udara dan pertimbangkan langkah-langkah pengendalian yang lebih ketat untuk industri-industri tersebut.
-
-- **Adaptasi Terhadap Kondisi Cuaca:** Buat rencana untuk mengelola kualitas udara yang mempertimbangkan kondisi cuaca yang mempengaruhi konsentrasi PM2.5.
-
-Dengan demikian, analisis ini membantu memahami dan menangani masalah kualitas udara dengan pendekatan yang lebih terfokus dan berbasis data.
+3. **Perbandingan dengan Standar Kualitas Udara:**
+   - Dari perbandingan dengan standar kualitas udara WHO, kita mengetahui bahwa rata-rata tahunan PM2.5 di Stasiun Guanyuan melebihi standar tahunan WHO sebesar 10 µg/m³, dan rata-rata harian PM2.5 juga melebihi standar 24 jam WHO sebesar 25 µg/m³. Ini menunjukkan bahwa kualitas udara di Stasiun Guanyuan tidak memenuhi standar kesehatan yang ditetapkan oleh WHO, yang dapat memiliki implikasi serius bagi kesehatan masyarakat.
 """)
