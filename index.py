@@ -10,7 +10,7 @@ st.set_page_config(page_title="Analisis Kualitas Udara Stasiun Guanyuan oleh Gre
 
 # Memuat dataset
 try:
-    data = pd.read_csv('data\PRSA_Data_Guanyuan_20130301-20170228.csv')
+    data = pd.read_csv('data/PRSA_Data_Guanyuan_20130301-20170228.csv')
 except FileNotFoundError:
     st.error("File data tidak ditemukan. Silakan periksa jalur file.")
     st.stop()
