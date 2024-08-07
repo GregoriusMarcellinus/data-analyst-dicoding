@@ -113,25 +113,55 @@ try:
 except ValueError as e:
     st.error("Tidak dapat melakukan dekomposisi deret waktu: " + str(e))
 
+# Rata-rata Jam Heatmap
+st.subheader('Rata-rata Jam per Jam PM2.5')
+try:
+    # Pastikan tipe data benar dan tangani nilai yang hilang
+    data['hour'] = data['hour'].astype(int)
+    data['PM2.5'] = pd.to_numeric(data['PM2.5'], errors='coerce')
+    data['PM2.5'].ffill(inplace=True)
+
+    # Hitung rata-rata per jam
+    hourly_avg = data.groupby('hour')['PM2.5'].mean()
+
+    # Plotting
+    fig, ax = plt.subplots()
+    sns.heatmap([hourly_avg.values], ax=ax, cmap='coolwarm')
+    plt.title('Rata-rata Jam per Jam PM2.5')
+    st.pyplot(fig)
+except Exception as e:
+    st.error(f"Kesalahan dalam plotting rata-rata jam per jam: {e}")
+
+# Analisis Arah Angin
+st.subheader('Analisis Arah Angin')
+wind_data = data_filtered.groupby('wd')['PM2.5'].mean()
+fig = plt.figure(figsize=(8, 6))
+ax = fig.add_subplot(111, polar=True)
+theta = np.linspace(0, 2 * np.pi, len(wind_data))
+bars = ax.bar(theta, wind_data.values, align='center', alpha=0.5)
+plt.title('Level PM2.5 Berdasarkan Arah Angin')
+st.pyplot(fig)
+
+# Curah Hujan vs. Kualitas Udara
+st.subheader('Curah Hujan vs. Level PM2.5')
+fig, ax = plt.subplots()
+sns.scatterplot(x='RAIN', y='PM2.5', data=data_filtered, ax=ax)
+plt.title('Curah Hujan vs. Level PM2.5')
+st.pyplot(fig)
+
+# Heatmap Korelasi - Interaktif
+st.subheader('Heatmap Korelasi Interaktif')
+selected_columns = st.multiselect('Pilih Kolom untuk Korelasi', data.columns, default=['PM2.5', 'NO2', 'TEMP', 'PRES', 'DEWP'])
+corr = data[selected_columns].corr()
+fig, ax = plt.subplots()
+sns.heatmap(corr, annot=True, ax=ax)
+st.pyplot(fig)
+
+
 # Kesimpulan
 st.write("""
-### Pertanyaan Bisnis
-1. **Bagaimana tren musiman dan tahunan dari level PM2.5 di Stasiun Guanyuan?**
-   - Dari grafik rata-rata level PM2.5 bulanan dan dekomposisi deret waktu, kita dapat mengidentifikasi pola musiman dan tahunan dalam konsentrasi PM2.5. Apakah terdapat bulan-bulan tertentu dengan level PM2.5 yang lebih tinggi atau lebih rendah secara konsisten?
-
-2. **Bagaimana hubungan antara kondisi cuaca dan level PM2.5 di Stasiun Guanyuan?**
-   - Dengan menggunakan heatmap korelasi, kita dapat menganalisis hubungan antara indikator kualitas udara (seperti PM2.5) dan berbagai kondisi cuaca (seperti suhu, tekanan, dan kelembapan). Apakah terdapat korelasi signifikan yang dapat membantu memprediksi level PM2.5 berdasarkan kondisi cuaca tertentu?
-
-### Kesimpulan dari Visualisasi Data
-
-1. **Tren Musiman dan Tahunan:**
-   - Dari analisis tren musiman, kita melihat bahwa rata-rata level PM2.5 bervariasi sepanjang tahun dengan beberapa bulan menunjukkan level yang lebih tinggi. Grafik batang rata-rata level PM2.5 bulanan menunjukkan adanya puncak pada bulan tertentu yang mungkin terkait dengan perubahan musim atau kegiatan manusia.
-   - Dekomposisi deret waktu menunjukkan komponen musiman yang berulang setiap tahun serta tren jangka panjang dari level PM2.5. Komponen musiman mengindikasikan fluktuasi periodik yang konsisten, sementara komponen tren memberikan gambaran mengenai arah jangka panjang dari perubahan level PM2.5.
-
-2. **Hubungan antara Kondisi Cuaca dan Level PM2.5:**
-   - Heatmap korelasi menunjukkan adanya hubungan antara PM2.5 dengan indikator kualitas udara lainnya serta kondisi cuaca seperti suhu, tekanan, dan kelembapan. Misalnya, mungkin terdapat korelasi negatif antara PM2.5 dan suhu, yang menunjukkan bahwa level PM2.5 cenderung lebih rendah pada suhu yang lebih tinggi.
-   - Korelasi ini memberikan wawasan penting mengenai faktor-faktor cuaca yang mungkin mempengaruhi kualitas udara, dan dapat digunakan untuk model prediksi serta kebijakan pengendalian kualitas udara.
-
-3. **Perbandingan dengan Standar Kualitas Udara:**
-   - Dari perbandingan dengan standar kualitas udara WHO, kita mengetahui bahwa rata-rata tahunan PM2.5 di Stasiun Guanyuan melebihi standar tahunan WHO sebesar 10 µg/m³, dan rata-rata harian PM2.5 juga melebihi standar 24 jam WHO sebesar 25 µg/m³. Ini menunjukkan bahwa kualitas udara di Stasiun Guanyuan tidak memenuhi standar kesehatan yang ditetapkan oleh WHO, yang dapat memiliki implikasi serius bagi kesehatan masyarakat.
+- Dasbor menyediakan analisis mendalam dan interaktif mengenai data kualitas udara.
+- Berbagai visualisasi menawarkan wawasan mengenai tingkat PM2.5, distribusinya, dan faktor-faktor yang memengaruhinya.
+- Tren musiman dan dampak berbagai kondisi cuaca dan polutan terhadap kualitas udara digambarkan dengan jelas.
+- Pengguna dapat menjelajahi data secara dinamis untuk memperoleh pemahaman yang lebih mendalam mengenai tren kualitas udara.
 """)
